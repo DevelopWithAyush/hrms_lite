@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import { config } from './config/env.js';
 import { connectDB } from './config/db.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { verifyEmailConfig } from './utils/email.js';
 
 // Routes
 import authRoutes from './routes/authRoutes.js';
@@ -46,6 +47,12 @@ app.use((req, res) => {
 const startServer = async () => {
   try {
     await connectDB();
+    
+    // Verify email configuration (non-blocking)
+    verifyEmailConfig().catch((err) => {
+      console.error('Email verification error:', err);
+    });
+    
     app.listen(config.port, () => {
       console.log(`🚀 Server running on port ${config.port}`);
       console.log(`📍 Environment: ${config.nodeEnv}`);

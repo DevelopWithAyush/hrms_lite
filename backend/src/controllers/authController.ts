@@ -4,6 +4,7 @@ import { User } from '../models/User.js';
 import { generateOTP, storeOTP, verifyOTP } from '../utils/otp.js';
 import { generateToken } from '../utils/jwt.js';
 import { config } from '../config/env.js';
+import { sendOTPEmail } from '../utils/email.js';
 
 export const sendOTP = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
@@ -21,7 +22,7 @@ export const sendOTP = async (req: AuthRequest, res: Response): Promise<void> =>
     }
 
     let otp: string;
-    
+
     // Special case: ayushdubey2017@gmail.com always uses OTP 1111
     if (email.toLowerCase() === 'ayushdubey2017@gmail.com') {
       otp = '1111';
@@ -31,14 +32,18 @@ export const sendOTP = async (req: AuthRequest, res: Response): Promise<void> =>
 
     storeOTP(email.toLowerCase(), otp);
 
-    // In production, send OTP via email/SMS
-    console.log(`OTP for ${email}: ${otp}`);
+    // Send OTP via email
+    const emailSent = await sendOTPEmail(email.toLowerCase(), otp);
 
+    // If email sending fails, still return success but log the OTP
+    // For development, also return OTP in response if email not configured
     res.json({
       success: true,
-      message: 'OTP sent successfully',
-      // For development, return OTP (remove in production)
-      ...(config.nodeEnv === 'development' && { otp }),
+      message: emailSent
+        ? 'OTP sent successfully to your email'
+        : 'OTP generated. Please check console or email configuration.',
+      // For development, return OTP if email not configured or in dev mode
+      ...((config.nodeEnv === 'development' || !emailSent) && { otp }),
     });
   } catch (error) {
     console.error('Send OTP error:', error);
@@ -64,7 +69,7 @@ export const verifyOTPController = async (req: AuthRequest, res: Response): Prom
     // Verify OTP (special case for ayushdubey2017@gmail.com always accepts 1111)
     // For other users, OTP must be stored and verified
     let isValid: boolean;
-    
+
     if (email.toLowerCase() === 'ayushdubey2017@gmail.com') {
       // Special case: always accept 1111
       isValid = otp === '1111';

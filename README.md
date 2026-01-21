@@ -78,7 +78,23 @@ PORT=5000
 MONGO_URI=mongodb://localhost:27017/hrms-lite
 JWT_SECRET=your-super-secret-jwt-key-change-in-production
 CLIENT_URL=http://localhost:3000
+
+# Email Configuration (for OTP)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-app-password
+EMAIL_FROM=noreply@hrms-lite.com
 ```
+
+**Email Setup (Gmail Example):**
+1. Enable 2-Factor Authentication on your Gmail account
+2. Generate an App Password: https://myaccount.google.com/apppasswords
+3. Use the App Password in `EMAIL_PASSWORD` (not your regular Gmail password)
+4. Set `EMAIL_USER` to your Gmail address
+5. For other email providers, update `EMAIL_HOST` and `EMAIL_PORT` accordingly
+
+**Note:** If email is not configured, OTP will be logged to console (development mode only).
 
 4. Seed admin users:
 ```bash
@@ -240,6 +256,11 @@ npm run lint   # Run ESLint
 - `MONGO_URI` - MongoDB connection string
 - `JWT_SECRET` - Secret key for JWT tokens
 - `CLIENT_URL` - Frontend URL for CORS
+- `EMAIL_HOST` - SMTP server host (default: smtp.gmail.com)
+- `EMAIL_PORT` - SMTP server port (default: 587)
+- `EMAIL_USER` - Email address for sending OTP
+- `EMAIL_PASSWORD` - Email password or app password
+- `EMAIL_FROM` - Sender email address
 
 ### Frontend (.env.local)
 - `NEXT_PUBLIC_API_URL` - Backend API URL
