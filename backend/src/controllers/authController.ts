@@ -89,12 +89,14 @@ export const verifyOTPController = async (req: AuthRequest, res: Response): Prom
       role: user.role,
     });
 
-    // Set HTTP-only cookie
+  
+
     res.cookie('token', token, {
       httpOnly: true,
-      secure: config.nodeEnv === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      secure: true,
+      sameSite: 'none',
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      path: '/',
     });
 
     res.json({
@@ -141,7 +143,14 @@ export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
 
 export const logout = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    res.clearCookie('token');
+
+
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      path: '/',
+    });
     res.json({ success: true, message: 'Logged out successfully' });
   } catch (error) {
     console.error('Logout error:', error);
