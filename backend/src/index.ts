@@ -47,13 +47,13 @@ app.use((req, res) => {
 const startServer = async () => {
   try {
     await connectDB();
-    
+
     // Verify email configuration (non-blocking)
     verifyEmailConfig().catch((err) => {
       console.error('Email verification error:', err);
     });
-    
-    const port = parseInt(config.port, 10) || 5000;
+
+    const port = parseInt(config.port || '5000', 10);
     app.listen(port, () => {
       console.log(`🚀 Server running on port ${port}`);
       console.log(`📍 Environment: ${config.nodeEnv}`);
