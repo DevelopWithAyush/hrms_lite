@@ -3,15 +3,15 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const config = {
-  port: process.env.PORT || '5000',
-  mongoUri: process.env.MONGO_URI || 'mongodb://localhost:27017/hrms-lite',
-  jwtSecret: process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production',
-  clientUrl: process.env.CLIENT_URL || 'http://localhost:3000',
-  nodeEnv: process.env.NODE_ENV || 'development',
+  port: process.env.PORT ,
+  mongoUri: process.env.MONGO_URI ,
+  jwtSecret: process.env.JWT_SECRET ,
+  clientUrl: process.env.CLIENT_URL ,
+  nodeEnv: process.env.NODE_ENV ,
   // Email configuration
-  emailHost: process.env.EMAIL_HOST || 'smtp.gmail.com',
+  emailHost: process.env.EMAIL_HOST ,
   emailPort: parseInt(process.env.EMAIL_PORT || '587', 10),
-  emailUser: process.env.EMAIL_USER || '',
-  emailPassword: process.env.EMAIL_PASSWORD || '',
-  emailFrom: process.env.EMAIL_FROM || process.env.EMAIL_USER || '',
+  emailUser: process.env.EMAIL_USER ,
+  emailPassword: process.env.EMAIL_PASSWORD ,
+  emailFrom: process.env.EMAIL_FROM ,
 } as const;
