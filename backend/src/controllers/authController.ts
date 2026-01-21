@@ -146,6 +146,7 @@ export const logout = async (req: AuthRequest, res: Response): Promise<void> => 
 
 
     res.clearCookie('token', {
+      domain: '.developwithayush.com',
       httpOnly: true,
       secure: true,
       sameSite: 'none',
