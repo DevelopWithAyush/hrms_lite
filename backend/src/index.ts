@@ -53,8 +53,9 @@ const startServer = async () => {
       console.error('Email verification error:', err);
     });
     
-    app.listen(config.port, () => {
-      console.log(`🚀 Server running on port ${config.port}`);
+    const port = parseInt(config.port, 10) || 5000;
+    app.listen(port, () => {
+      console.log(`🚀 Server running on port ${port}`);
       console.log(`📍 Environment: ${config.nodeEnv}`);
     });
   } catch (error) {

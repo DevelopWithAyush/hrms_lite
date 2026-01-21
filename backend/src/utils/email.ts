@@ -3,6 +3,10 @@ import { config } from '../config/env.js';
 
 // Create reusable transporter
 const createTransporter = () => {
+  if (!config.emailHost || !config.emailUser || !config.emailPassword) {
+    throw new Error('Email configuration is incomplete');
+  }
+
   return nodemailer.createTransport({
     host: config.emailHost,
     port: config.emailPort,
@@ -11,7 +15,7 @@ const createTransporter = () => {
       user: config.emailUser,
       pass: config.emailPassword,
     },
-  });
+  } as nodemailer.TransportOptions);
 };
 
 // Verify email configuration
