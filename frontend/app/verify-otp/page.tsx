@@ -56,7 +56,11 @@ export default function VerifyOTPPage() {
       if (response.data.success) {
         sessionStorage.removeItem('loginEmail');
         sessionStorage.removeItem('otp');
-        router.push('/dashboard');
+        // Use window.location for immediate redirect to ensure cookie is set
+        // Small delay to allow cookie to be set in browser
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 100);
       }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Invalid OTP. Please try again.');

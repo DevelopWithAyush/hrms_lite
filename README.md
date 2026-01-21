@@ -319,6 +319,25 @@ Or deploy to **Vercel**, **Netlify**, or any static hosting provider.
 - Verify JWT_SECRET is set correctly
 - Check if admin users are seeded
 
+### Vercel Deployment Issues (Redirect after login)
+If you're redirected back to login after successful authentication on Vercel:
+
+1. **Backend Environment Variables:**
+   - Set `NODE_ENV=production`
+   - Set `CLIENT_URL` to your exact Vercel URL (e.g., `https://your-app.vercel.app`)
+   - Ensure backend supports HTTPS
+
+2. **Frontend Environment Variables:**
+   - Set `NEXT_PUBLIC_API_URL` to your backend API URL (must be HTTPS if frontend is HTTPS)
+
+3. **Cookie Settings:**
+   - Cookies are automatically set with `sameSite: 'none'` and `secure: true` for production/HTTPS
+   - Ensure your backend CORS allows credentials from your Vercel domain
+
+4. **CORS Configuration:**
+   - Backend `CLIENT_URL` must exactly match your Vercel deployment URL (including https://)
+   - Both frontend and backend must use HTTPS in production
+
 ## 📄 License
 
 This project is for educational/demonstration purposes.
