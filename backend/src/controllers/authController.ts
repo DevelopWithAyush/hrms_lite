@@ -92,6 +92,7 @@ export const verifyOTPController = async (req: AuthRequest, res: Response): Prom
   
 
     res.cookie('token', token, {
+      domain: '.developwithayush.com',
       httpOnly: true,
       secure: true,
       sameSite: 'none',
